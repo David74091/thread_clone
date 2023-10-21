@@ -72,3 +72,76 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     throw new Error(`獲取文章失敗：${error.message}`);
   }
 }
+
+export async function fetchThreadById(id: string) {
+  try {
+    connectToDB();
+
+    //TODO:populate community
+    const thread = await Thread.findById(id)
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id id name image",
+      })
+      //將會回傳thread的評論，還有該評論的評論
+      .populate({
+        path: "children",
+        populate: [
+          { path: "author", model: User, select: "_id id name parentId image" },
+          {
+            path: "children",
+            model: Thread,
+            populate: {
+              path: "author",
+              model: User,
+              select: "_id id name parentId image",
+            },
+          },
+        ],
+      })
+      .exec();
+
+    return thread;
+  } catch (error: any) {
+    throw new Error(`獲取Thread失敗：${error.message}`);
+  }
+}
+
+export async function addCommentToThread(
+  threadId: string,
+  commentText: string,
+  userId: string,
+  path: string
+) {
+  try {
+    connectToDB();
+
+    //找到原始thread by id
+    const originalThread = await Thread.findById(threadId);
+
+    if (!originalThread) {
+      throw new Error("Thread not found");
+    }
+
+    const commentThread = new Thread({
+      text: commentText,
+      author: userId,
+      parentId: threadId,
+    });
+
+    //儲存新thread
+
+    const savedCommentThread = await commentThread.save();
+
+    console.log("originalThread：", originalThread);
+
+    originalThread.children.push(savedCommentThread._id);
+
+    await originalThread.save();
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error adding comment to thread: ${error.message}`);
+  }
+}
