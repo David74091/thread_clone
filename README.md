@@ -1,10 +1,15 @@
-## 電商網站
-首次運用Next.js框架使網站提升性能、優化搜尋引擎（SEO），同時整合Sanity作為無頭CMS來有效管理內容。
+## Threads
+根據Meta旗下Threads社交平台進行仿製練習
+
+---
+
+## 技術結構
+採用了Next.js 13.4進行伺服器端渲染，MongoDB做為資料庫，TailwindCSS+Shadcn創建Ui介面，Clerk進行身份驗證、處理檔案上傳。
 
 ---
 
 ## Demo 
-https://ecommerce-sanity-7zas.vercel.app/
+https://thread-clone-rosy.vercel.app/
   
 ---
 
