@@ -14,3 +14,13 @@ https://thread-clone-rosy.vercel.app/
 ---
 
 ## 網頁部分截圖：
+![](homePage.png "")
+---
+
+![](search.png "")
+---
+
+![](activity.png "")
+---
+
+![](profile.png "")
