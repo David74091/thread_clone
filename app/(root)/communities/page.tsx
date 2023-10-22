@@ -34,7 +34,7 @@ async function Page({
 
       <section className="mt-9 flex flex-wrap gap-4">
         {result.communities.length === 0 ? (
-          <p className="no-result">No Result</p>
+          <p className="no-result">沒有結果</p>
         ) : (
           <>
             {result.communities.map((community) => (
